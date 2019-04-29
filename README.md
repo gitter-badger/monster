@@ -1,6 +1,7 @@
 ## ![monster logo](https://raw.githubusercontent.com/deepgrace/monster/master/logo/monster.png)
 [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
+[![Gitter](https://badges.gitter.im/actmp/community.svg)](https://gitter.im/actmp/community) [![Join the chat at https://gitter.im/deepgrace/community](https://badges.gitter.im/deepgrace/community.svg)](https://gitter.im/deepgrace/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 # Advanced C++ Template MetaProgramming Framework 
 
 ## Overview
@@ -471,6 +472,9 @@ int main(int argc, char* argv[])
     static_assert(std::is_same_v<bubble_sort_t<std::tuple<int, double, char, int, char, float, double>>,
                   std::tuple<char, char, int, int, float, double, double>>);
 
+    static_assert(std::is_same_v<shaker_sort_t<std::tuple<uint64_t, int, double, char, int, char, float, double>>,
+                  std::tuple<char, char, int, int, float, uint64_t, double, double>>);
+
     static_assert(std::is_same_v<selection_sort_t<std::tuple<int, int, double, char, int, char, double>>,
                   std::tuple<char, char, int, int, int, double, double>>);
 
@@ -488,19 +492,22 @@ int main(int argc, char* argv[])
     static_assert(std::is_same_v<heap_sort_t<std::tuple<uint64_t, double, float, char, char, double>>,
                   std::tuple<char, char, float, double, double, uint64_t>>);
 
-    using input = std::integer_sequence<int, 2, 0, -3, 4, -7, 5>;
-    using output = std::integer_sequence<int, -7, -3, 0, 2, 4, 5>;
+    using input = std::integer_sequence<int, 2, 1, 0, -3, 4, 1, -7, 5, -2>;
+    using output = std::integer_sequence<int, -7, -3, -2, 0, 1, 1, 2, 4, 5>;
 
+    static_assert(std::is_same_v<stable_sort_t<input>, output>);
     static_assert(std::is_same_v<counting_sort_t<input>, output>);
     static_assert(std::is_same_v<stooge_sort_t<input>, output>);
     static_assert(std::is_same_v<bubble_sort_t<input>, output>);
+    static_assert(std::is_same_v<shaker_sort_t<input>, output>);
     static_assert(std::is_same_v<selection_sort_t<input>, output>);
     static_assert(std::is_same_v<quick_sort_t<input>, output>);
     static_assert(std::is_same_v<insertion_sort_t<input>, output>);
     static_assert(std::is_same_v<merge_sort_t<input>, output>);
     static_assert(std::is_same_v<heap_sort_t<input>, output>);
 
-    static_assert(sort_v<input, output, stable_sort, counting_sort, stooge_sort, bubble_sort, selection_sort, quick_sort, insertion_sort, merge_sort, heap_sort>);
+    static_assert(sort_v<input, output, stable_sort, counting_sort, stooge_sort, bubble_sort,
+                  shaker_sort, selection_sort, quick_sort, insertion_sort, merge_sort, heap_sort>);
 
     return 0;
 }
